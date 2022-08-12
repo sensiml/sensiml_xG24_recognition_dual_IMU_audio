@@ -1,0 +1,13 @@
+# list of files to be ignored by github
+Binaries/
+Includes/
+autogen/
+config/
+gecko_sdk*/
+GNU*/
+.*/
+imported_project_report.html
+*.bak
+
+
+
