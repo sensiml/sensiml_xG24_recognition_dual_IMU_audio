@@ -59,7 +59,7 @@ typedef enum
 
 // Default sample rates.
 //#define ACCEL_GYRO_DEFAULT_ODR ACCEL_GYRO_ODR_102p3HZ
-#define ACCEL_GYRO_DEFAULT_ODR ACCEL_GYRO_ODR_281p3HZ
+#define ACCEL_GYRO_DEFAULT_ODR ACCEL_GYRO_ODR_102p3HZ
 /**************************************************************************//**
  * Configure periodic timer and send configuration information
  *****************************************************************************/
