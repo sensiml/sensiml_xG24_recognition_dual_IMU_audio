@@ -14,6 +14,7 @@ int td_index = 0;
 int sml_recognition_run(signed short *data_batch, int batch_sz, uint8_t num_sensors, uint32_t sensor_id)
 {
 	int ret;
+	int return_value = -1;
 
 	int batch_index = 0;
 	signed short* data;
@@ -36,11 +37,13 @@ int sml_recognition_run(signed short *data_batch, int batch_sz, uint8_t num_sens
 			ret=-2;
 		ret = kb_run_model_with_cascade_features((SENSOR_DATA_T *)data, num_sensors, KB_MODEL_4labels_int8_original_noStridedSlice2_INDEX);
 		if (ret >= 0){
+		    return_value = ret;
 			sml_output_results(KB_MODEL_4labels_int8_original_noStridedSlice2_INDEX, ret);
 			kb_reset_model(0);
 		};
 	//FILL_RUN_MODEL_CUSTOM
 	#endif //SML_USE_TEST_DATA
 	}
-	return ret;
+
+	return return_value;
 }

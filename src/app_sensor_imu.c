@@ -96,15 +96,14 @@ typedef struct
   int16_t acc_vector[APP_IMU_AXES_PER_SENSOR];
 } imu_6_dof_data_t;
 
-//static imu_6_dof_data_t imu_data[APP_IMU_SAMPLES_PER_PACKET];
-static uint8_t samples_collected = 0;
+static imu_6_dof_data_t imu_data[APP_IMU_SAMPLES_PER_PACKET];
 static uint32_t count = 0;
-int sml_recognition_run_IMU(signed short *data_batch, int batch_sz, uint8_t num_sensors, uint32_t sensor_id){
-  //printf("Stubbed out \n");
+int16_t sml_recognition_run_IMU(signed short *data_batch, int batch_sz, uint8_t num_sensors, uint32_t sensor_id){
+
   count++;
   return 1;
 }
-void app_sensor_imu_process_action(void)
+int16_t app_sensor_imu_process_action(void)
 {
   sl_status_t sc;
 
@@ -112,7 +111,10 @@ void app_sensor_imu_process_action(void)
   sc = app_sensor_imu_get(data);
   if(sc == SL_STATUS_OK)
   {
-      sml_recognition_run_IMU(data, 1, 3, 1);
+      return sml_recognition_run_IMU(data, 1, 3, 1);
+  }else{
+
+      return -1;
   }
 
 }

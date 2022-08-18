@@ -38,7 +38,9 @@
 
 #include "app_iostream_usart.h"
 #include "app_voice.h"
+#include "app_sensor_imu.h"
 #include "app_led.h"
+#include "sensiml_recognition_dual_IMU_audio_combine.h"
 
 volatile bool config_received = true;
 
@@ -56,11 +58,14 @@ void app_init(void)
   app_voice_start();
 }
 
+
+
 void app_process_action(void)
 {
-  // Send JSON configuration and wait to receive "connect" command
-  app_voice_process_action();
-  app_sensor_imu_process_action();
+
+  set_audio_classification(app_voice_process_action());
+  set_imu_classification(app_sensor_imu_process_action());
+  combine_classifications();
   app_led_process_action();
 }
 

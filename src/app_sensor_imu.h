@@ -73,7 +73,7 @@ void app_config_process_action_imu(void);
 /**************************************************************************//**
  * IMU sensor ticking function
  *****************************************************************************/
-void app_sensor_imu_process_action(void);
+int16_t app_sensor_imu_process_action(void);
 
 /**************************************************************************//**
  * Initialize IMU sensor.

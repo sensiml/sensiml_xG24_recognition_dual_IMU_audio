@@ -97,7 +97,7 @@ sl_sleeptimer_timer_handle_t send_config_timer;
  * Depending on the configuration settings data are filtered, encoded and added
  * to a circular buffer.
  ******************************************************************************/
-static void voice_process_data(void);
+static int16_t voice_process_data(void);
 
 /***************************************************************************//**
  * DMA callback indicating that the buffer is ready.
@@ -185,9 +185,9 @@ void app_voice_stop(void)
 /***************************************************************************//**
  * Voice event handler.
  ******************************************************************************/
-void app_voice_process_action(void)
+int16_t app_voice_process_action(void)
 {
-voice_process_data();
+return voice_process_data();
 }
 
 /***************************************************************************//**
@@ -223,7 +223,7 @@ void app_voice_set_filter_enable(bool status)
 // -----------------------------------------------------------------------------
 // Private function definitions
 
-static void voice_process_data(void)
+static int16_t voice_process_data(void)
 {
   int16_t buffer[MIC_SAMPLE_BUFFER_SIZE];
   uint32_t sample_count = frames * voice_config.channels;
@@ -237,7 +237,7 @@ static void voice_process_data(void)
     // Filter samples.
     fil_filter(&filter, buffer, buffer, frames);
   }
-  sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 2);
+  return sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 2);
 
 }
 
