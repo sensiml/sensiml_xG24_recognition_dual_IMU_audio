@@ -14,7 +14,8 @@
 
 static circular_buffer_t audio_softMax_buffer;
 
-model_results_t imu_model_softMax;
+
+tree_ensemble_model_results_t imu_model_softMax;
 
 float imu_model_weights[] =
   { 0.5, 0.5, 0.5, 0.5, 0.5 };
@@ -23,15 +24,15 @@ float audio_model_weights[] =
 
 void init_softMax_combinations ()
 {
-  cb_init ((circular_buffer_t*) &audio_softMax_buffer, 100, sizeof(model_results_t));
+  cb_init ((circular_buffer_t*) &audio_softMax_buffer, 100, sizeof(tf_micro_model_results_t));
 }
 
-void set_imu_softMax (model_results_t modelResults)
+void set_imu_softMax (tree_ensemble_model_results_t modelResults)
 {
   imu_model_softMax = modelResults;
 }
 
-void set_audio_softMax (model_results_t * modelResults)
+void set_audio_softMax (tf_micro_model_results_t * modelResults)
 {
 
   push ((circular_buffer_t*) &audio_softMax_buffer, (void*) modelResults);
@@ -40,7 +41,7 @@ void set_audio_softMax (model_results_t * modelResults)
 
 void combine_softMax (uint8_t size)
 {
-  model_results_t audio_softMax;
+  tf_micro_model_results_t audio_softMax;
   uint8_t best_index = 0;
   float max_result;
   float running_total[NUMBER_OF_CLASSES];
@@ -65,6 +66,7 @@ void combine_softMax (uint8_t size)
           for (int j = 0; j < NUMBER_OF_CLASSES; j++)
             {
               running_total[j] += audio_softMax.output_tensor[j];
+
             }
         }
       // divide the results by the size
@@ -76,7 +78,7 @@ void combine_softMax (uint8_t size)
       // next perform a weighted sum with the IMU and Audio
       for (int i = 0; i < NUMBER_OF_CLASSES; i++)
         {
-          combined_results[i] = imu_model_weights[i] * imu_model_softMax.output_tensor[i]
+          combined_results[i] = imu_model_weights[i] * imu_model_softMax.class_percentages[i]
               + audio_model_weights[i] * running_total[i];
         }
 

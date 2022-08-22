@@ -53,7 +53,7 @@ void app_init(void)
   app_sensor_imu_init();
   app_sensor_imu_enable(true);
   init_classifications();
-  init_softMax_combinations ();
+  //init_softMax_combinations ();
   kb_model_init();
   app_voice_init();
   // Start sampling
@@ -65,13 +65,13 @@ void app_init(void)
 void app_process_action(void)
 {
 
- app_voice_process_action();
+
+
  app_sensor_imu_process_action();
- combine_classifications(WINDOW_SIZE);
- combine_softMax (WINDOW_SIZE);
+ //app_voice_process_action();
+ //combine_classifications(WINDOW_SIZE);
+ //combine_softMax (WINDOW_SIZE);
  app_led_process_action();
-
-
 
 
   //combine_classifications();

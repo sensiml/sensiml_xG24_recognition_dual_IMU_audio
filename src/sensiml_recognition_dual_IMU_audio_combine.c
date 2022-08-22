@@ -33,7 +33,7 @@ void set_audio_classification (int8_t classification)
 {
 
   push ((circular_buffer_t*) &audio_classification_buffer, (void*) &classification);
-  printf ("Audio buffer size = %i\n\r", audio_classification_buffer.count);
+  //printf ("Audio buffer size = %i\n\r", audio_classification_buffer.count);
 }
 
 int8_t get_imu_classification ()
@@ -55,11 +55,16 @@ void combine_classifications (uint8_t size)
   uint8_t best_index = 0;
   uint8_t i;
 
-  if ((imu_classification > -1) && (audio_classification_buffer.count >= (size)))
+  if ((imu_classification > -1) && (audio_classification_buffer.count >= size))
     {
       printf ("Integration of IMU and Audio data\n\r");
       printf ("IMU classification = %i\n\r", imu_classification);
 
+      // try to use the last size elements
+      for (int i = 0; i < (audio_classification_buffer.count-size); i++)
+        {
+          pop ((circular_buffer_t*) &audio_classification_buffer, (void*) &audio_classification);
+        }
       // first clear out the voting
       for (i = 0; i < NUMBER_OF_CLASSES; i++)
         {
@@ -69,6 +74,7 @@ void combine_classifications (uint8_t size)
       for (i = 0; i < size; i++)
         {
           pop ((circular_buffer_t*) &audio_classification_buffer, (void*) &audio_classification);
+          printf ("Audio class %i\n\r", audio_classification);
           audio_classifications[audio_classification]++;
         }
       for (i = 0; i < NUMBER_OF_CLASSES; i++)
@@ -95,12 +101,17 @@ void combine_classifications (uint8_t size)
         }
 
       printf ("Majority vote = %i\n\r", best_index);
-    }else {
-        if ((get_imu_classification () < 0) && (audio_classification_buffer.count >= size)){
-            // pop out size elements since we won't use them
-            printf("No IMU so resyncing audio data");
-            for(int i = 0; i < size; i++){
-                pop ((circular_buffer_t*) &audio_classification_buffer, (void*) &audio_classification);
+      set_imu_classification (-1);
+    }
+  else
+    {
+      if ((get_imu_classification () < 0) && (audio_classification_buffer.count >= 100))
+        {
+          // pop out size elements since we won't use them
+          printf ("No IMU so resyncing audio data\n\r");
+          for (int i = 0; i < audio_classification_buffer.count; i++)
+            {
+              pop ((circular_buffer_t*) &audio_classification_buffer, (void*) &audio_classification);
             }
 
         }
