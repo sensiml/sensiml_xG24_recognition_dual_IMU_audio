@@ -85,7 +85,8 @@ cb_err_code_t cb_init(circular_buffer_t *cb, size_t capacity, size_t sz);
 cb_err_code_t cb_push_buff(circular_buffer_t *cb, void *inBuff, size_t len);
 cb_err_code_t cb_pop_buff(circular_buffer_t *cb, void *outBuff, size_t len);
 void cb_free(circular_buffer_t *cb);
-
+cb_err_code_t push(circular_buffer_t *cb, void *item);
+cb_err_code_t pop(circular_buffer_t *cb, void *item);
 /** @} {end defgroup Circular_Buffer_Functions}*/
 
 /** @} {end addtogroup Circular_Buffer} */

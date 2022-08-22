@@ -106,16 +106,16 @@ int16_t sml_recognition_run_IMU(signed short *data_batch, int batch_sz, uint8_t 
 int16_t app_sensor_imu_process_action(void)
 {
   sl_status_t sc;
-
+  int16_t return_val = -1;
   unsigned char *p;
   sc = app_sensor_imu_get(data);
   if(sc == SL_STATUS_OK)
   {
-      return sml_recognition_run_IMU(data, 1, 3, 1);
-  }else{
-
-      return -1;
+      return_val =  sml_recognition_run(data, 1, 3, 1);
+      //set_imu_data(data,1);
   }
+
+  return return_val;
 
 }
 

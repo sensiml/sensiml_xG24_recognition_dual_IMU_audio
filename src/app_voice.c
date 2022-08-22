@@ -46,6 +46,7 @@
 #include "sl_mic.h"
 #include "sl_sleeptimer.h"
 #include "sl_iostream.h"
+#include "sensiml_recognition_dual_IMU_audio_combine.h"
 
 // -----------------------------------------------------------------------------
 // Private macros
@@ -237,7 +238,9 @@ static int16_t voice_process_data(void)
     // Filter samples.
     fil_filter(&filter, buffer, buffer, frames);
   }
-  return sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 2);
+  sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 0);
+  //set_audio_data(buffer, MIC_SAMPLE_BUFFER_SIZE);
+  return 1;
 
 }
 
