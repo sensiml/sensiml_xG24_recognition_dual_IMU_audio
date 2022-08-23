@@ -46,6 +46,7 @@
 #include "sl_mic.h"
 #include "sl_sleeptimer.h"
 #include "sl_iostream.h"
+#include "sensiml_recognition_dual_IMU_audio_combine.h"
 
 // -----------------------------------------------------------------------------
 // Private macros
@@ -187,7 +188,12 @@ void app_voice_stop(void)
  ******************************************************************************/
 int16_t app_voice_process_action(void)
 {
-return voice_process_data();
+  if (event_process)
+    {
+      return voice_process_data();
+    }
+  return 0;
+
 }
 
 /***************************************************************************//**
@@ -228,16 +234,21 @@ static int16_t voice_process_data(void)
   int16_t buffer[MIC_SAMPLE_BUFFER_SIZE];
   uint32_t sample_count = frames * voice_config.channels;
 
+  //printf("sample_count %d, event process %s\n\r", sample_count, event_process ? "true" : "false");
   // Move DMA samples to local buffer.
   for (uint32_t i = 0; i < sample_count; i++ ) {
     buffer[i] = sample_buffer[i];
   }
+  event_process=false;
 
   if (voice_config.filter_enabled) {
     // Filter samples.
     fil_filter(&filter, buffer, buffer, frames);
   }
-  return sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 2);
+  sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 0);
+
+  //set_audio_data(buffer, MIC_SAMPLE_BUFFER_SIZE);
+  return 1;
 
 }
 

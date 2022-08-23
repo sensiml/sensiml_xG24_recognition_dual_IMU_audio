@@ -39,12 +39,13 @@
 #include "kb_typedefs.h"
 #include "kb_defines.h"
 //Total Models in this Knowledge Pack
-#define SENSIML_NUMBER_OF_MODELS 1
+#define SENSIML_NUMBER_OF_MODELS 2
 
 //Model Indexes to use for calls
-#define KB_MODEL_4labels_int8_original_noStridedSlice2_INDEX 0
+#define KB_MODEL_AUDIO_MODEL_INDEX 0
+#define KB_MODEL_IMU_MODEL_INDEX 1
 
-#define MAX_VECTOR_SIZE 184
+#define MAX_VECTOR_SIZE 300
 
 //FILL_SENSIML_SENSOR_USAGES
 

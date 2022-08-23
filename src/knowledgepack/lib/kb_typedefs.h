@@ -45,7 +45,13 @@ typedef unsigned short NORMTYPE;
 /*
 Expected sensor column ordering for each model
 
-#define CHANNEL_0_S_4labels_int8_original_noStridedSlice2 0
+#define CHANNEL_0_S_AUDIO_MODEL 0
+#define ACCELEROMETERX_S_IMU_MODEL 0
+#define ACCELEROMETERY_S_IMU_MODEL 1
+#define ACCELEROMETERZ_S_IMU_MODEL 2
+#define GYROSCOPEX_S_IMU_MODEL 3
+#define GYROSCOPEY_S_IMU_MODEL 4
+#define GYROSCOPEZ_S_IMU_MODEL 5
 
 */
 
@@ -78,6 +84,39 @@ typedef struct
     uint16_t number_patterns; //influence of a pattern
     uint16_t pattern_length;  //category of pattern
 } pme_model_header_t;
+
+
+
+/** @struct tree_ensemble_model_results
+ *  @brief This structure is used to get detailed model results information from decision tree ensemble classifiers
+ *  @var tree_ensemble_model_results::number_of_trees 
+ *  Number of trees in the ensemble model
+ *  @var tree_ensemble_model_results::classification_counts 
+ *  The number of models in the ensemble that made the prediction. The index corresponds to the result id
+ *  @var tree_ensemble_model_results::class_percentages 
+ *  Computes the percentage for each result that was associated with each class
+ */
+typedef struct tree_ensemble_model_results
+{
+    uint16_t number_of_trees; //number of trees in this model
+    uint8_t *classification_counts; //number of classifications for each class
+    float *class_percentages; //percentage results for this class
+} tree_ensemble_model_results_t;
+
+
+/** @struct tf_micro_model_results
+ *  @brief This structure is used to get detailed model results information from decision tree ensemble classifiers
+ *  @var tf_micro_model_results::num_outputs 
+ *  Number of classes in the model
+ *  @var tf_micro_model_results::output_tensor 
+ *  The final output tensor of the model used as input into the final classification layer
+ */
+typedef struct tf_micro_model_results
+{
+    uint8_t num_outputs; //number of outputs
+    float *output_tensor; //the output tensor results
+} tf_micro_model_results_t;
+
 
 /** KB Log levels. */
 enum kb_log_levels
