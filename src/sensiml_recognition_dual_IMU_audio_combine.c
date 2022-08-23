@@ -53,6 +53,7 @@ void combine_classifications (uint8_t size)
   uint8_t i;
   int best_index_count;
   int unknown_bias=2;
+  int key_io_bias=2;
 
   if ((imu_classification > -1) && (audio_classification_buffer.count >= size))
     {
@@ -81,54 +82,65 @@ void combine_classifications (uint8_t size)
         {
           switch(i){
             case 0:
-              printf ("Vote count for Unknown  = %i\n\r", audio_classifications[i]);
+              printf ("Vote count for Unknown  = %i\n", audio_classifications[i]);
               break;
             case 1:
-              printf ("Vote count for Unknown  = %i\n\r", audio_classifications[i]);
+              printf ("Vote count for Unknown  = %i\n", audio_classifications[i]);
               break;
             case 2:
-              printf ("Vote count for Key_IO   = %i\n\r", audio_classifications[i]);
+              printf ("Vote count for Key_IO   = %i\n", audio_classifications[i]);
               break;
             case 3:
-              printf ("Vote count for Knocking = %i\n\r", audio_classifications[i]);
+              printf ("Vote count for Knocking = %i\n", audio_classifications[i]);
               break;
             case 4:
-              printf ("Vote count for Locking  = %i\n\r", audio_classifications[i]);
+              printf ("Vote count for Locking  = %i\n", audio_classifications[i]);
               break;
             case 5:
-              printf ("Vote count for Filtered = %i\n\r", audio_classifications[i]);
+              printf ("Vote count for Filtered = %i\n", audio_classifications[i]);
               break;
           }
         }
 
+
+
       best_index_count = audio_classifications[0]-unknown_bias;
 
-      if (audio_classifications[1]-unknown_bias > best_index_count)
+      if (audio_classifications[1] > 0  && audio_classifications[1]-unknown_bias > best_index_count)
         {
           best_index = 1;
           best_index_count = audio_classifications[1]-unknown_bias;
         }
-      if (audio_classifications[2] > best_index_count)
+      if (audio_classifications[2] > 0  && audio_classifications[2] > best_index_count)
         {
           best_index = 2;
           best_index_count=audio_classifications[2];
         }
-      if (audio_classifications[3] > best_index_count)
+      if (audio_classifications[3] > 0  && audio_classifications[3] > best_index_count)
         {
           best_index = 3;
           best_index_count=audio_classifications[3];
         }
-      if (audio_classifications[4] > best_index_count)
+
+      if (audio_classifications[4] > 0  && audio_classifications[4] > best_index_count)
         {
           best_index = 4;
           best_index_count=audio_classifications[4];
         }
 
-      printf ("Majority vote = %i\n\r", best_index);
-      printf ("IMU Classification = %i\n\r", imu_classification);
+      if (best_index == 2 && audio_classifications[4] > 0 && audio_classifications[4] >= best_index_count-key_io_bias)
+        {
+          best_index=4;
+          best_index_count=audio_classifications[4];
+        }
 
-      printf("{\"ModelNumber\":0,\"Classification\":%d}\n\r", best_index);
+      printf ("Majority vote = %i\n", best_index);
+      printf ("IMU Classification = %i\n", imu_classification);
 
+       if (best_index_count > 0)
+         {
+      printf("{\"ModelNumber\":0,\"Classification\":%d}\n", best_index);
+         }
       // Reset IMU classification to none
       set_imu_classification (-1);
     }
