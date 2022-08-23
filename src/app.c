@@ -43,7 +43,7 @@
 #include "sensiml_recognition_dual_IMU_audio_combine.h"
 
 volatile bool config_received = true;
-
+#define  WINDOW_SIZE 100
 void app_init(void)
 {
   app_iostream_usart_init();
@@ -52,6 +52,8 @@ void app_init(void)
 
   app_sensor_imu_init();
   app_sensor_imu_enable(true);
+  init_classifications();
+  //init_softMax_combinations ();
   kb_model_init();
   app_voice_init();
   // Start sampling
@@ -63,9 +65,16 @@ void app_init(void)
 void app_process_action(void)
 {
 
-  set_audio_classification(app_voice_process_action());
-  set_imu_classification(app_sensor_imu_process_action());
-  combine_classifications();
+
+
+ app_sensor_imu_process_action();
+ app_voice_process_action();
+ combine_classifications(WINDOW_SIZE);
+ combine_softMax (WINDOW_SIZE);
+ app_led_process_action();
+
+
+  //combine_classifications();
   app_led_process_action();
 }
 
