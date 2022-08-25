@@ -8,7 +8,7 @@ IMU_MODEL_UUID = "bab2eb7e-7dfd-428b-8509-72b12b1e6dcb"
 IMU_MODEL_SOURCE_UUID = "f66d2842-8e74-48bd-bbc9-8a56c73684a4"
 
 
-client = Client()
+client = Client(server="sensiml", insecure=True)
 client.project = "Smart_Lock_IMU"
 
 kb_description = {
