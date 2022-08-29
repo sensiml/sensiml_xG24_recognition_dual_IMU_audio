@@ -34,7 +34,6 @@ void set_audio_classification (int8_t classification)
 {
 
   push ((circular_buffer_t*) &audio_classification_buffer, (void*) &classification);
-  //printf ("Audio buffer size = %i\n\r", audio_classification_buffer.count);
 }
 
 int8_t get_imu_classification ()
@@ -57,8 +56,6 @@ void combine_classifications (uint8_t size)
 
   if ((imu_classification > -1) && (audio_classification_buffer.count >= size))
     {
-      //printf ("Integration of IMU and Audio data\n\r");
-      //printf ("IMU classification = %i\n\r", imu_classification);
 
       // try to use the last size elements
       for (int i = 0; i < (audio_classification_buffer.count-size); i++)
@@ -74,8 +71,6 @@ void combine_classifications (uint8_t size)
       for (i = 0; i < size; i++)
         {
           pop ((circular_buffer_t*) &audio_classification_buffer, (void*) &audio_classification);
-          //printf ("Audio class %i\n\r", audio_classification);
-
           audio_classifications[audio_classification]++;
         }
       for (i = 0; i < NUMBER_OF_CLASSES; i++)
@@ -149,7 +144,6 @@ void combine_classifications (uint8_t size)
       if ((get_imu_classification () < 0) && (audio_classification_buffer.count >= size))
         {
           // pop out size elements since we won't use them
-          //printf ("No IMU so resyncing audio data\n\r");
 
           pop ((circular_buffer_t*) &audio_classification_buffer, (void*) &audio_classification);
 

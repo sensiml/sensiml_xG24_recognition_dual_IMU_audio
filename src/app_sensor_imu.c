@@ -98,11 +98,7 @@ typedef struct
 
 static imu_6_dof_data_t imu_data[APP_IMU_SAMPLES_PER_PACKET];
 static uint32_t count = 0;
-int16_t sml_recognition_run_IMU(signed short *data_batch, int batch_sz, uint8_t num_sensors, uint32_t sensor_id){
 
-  count++;
-  return 1;
-}
 int16_t app_sensor_imu_process_action(void)
 {
   sl_status_t sc;
@@ -111,7 +107,7 @@ int16_t app_sensor_imu_process_action(void)
   sc = app_sensor_imu_get(data);
   if(sc == SL_STATUS_OK)
   {
-      return sml_recognition_run_IMU(data, 1, 3, 1);
+      return sml_recognition_run(data, 1, 3, 1);
   }else{
 
       return -1;

@@ -234,7 +234,6 @@ static int16_t voice_process_data(void)
   int16_t buffer[MIC_SAMPLE_BUFFER_SIZE];
   uint32_t sample_count = frames * voice_config.channels;
 
-  //printf("sample_count %d, event process %s\n\r", sample_count, event_process ? "true" : "false");
   // Move DMA samples to local buffer.
   for (uint32_t i = 0; i < sample_count; i++ ) {
     buffer[i] = sample_buffer[i];
@@ -247,7 +246,6 @@ static int16_t voice_process_data(void)
   }
   sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 0);
 
-  //set_audio_data(buffer, MIC_SAMPLE_BUFFER_SIZE);
   return 1;
 
 }
