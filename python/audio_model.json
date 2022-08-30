@@ -527,7 +527,7 @@
             ],
             "classifiers": [
                 {
-                    "name": "TF Micro",
+                    "name": "TensorFlow Lite for Microcontrollers",
                     "inputs": {}
                 }
             ],
