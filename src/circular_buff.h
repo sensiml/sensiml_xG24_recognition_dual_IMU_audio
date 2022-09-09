@@ -90,4 +90,7 @@ void cb_free(circular_buffer_t *cb);
 
 /** @} {end addtogroup Circular_Buffer} */
 
+cb_err_code_t push(circular_buffer_t *cb, void *item);
+cb_err_code_t pop(circular_buffer_t *cb, void *item);
+
 #endif /* CIRCULAR_BUFF_H_ */
