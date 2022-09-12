@@ -2,6 +2,7 @@
 #include "kb.h"
 #include "sml_output.h"
 #include "sml_recognition_run.h"
+#include "sensiml_recognition_dual_IMU_audio_combine.h"
 
 //FILL_USE_TEST_DATA
 
@@ -13,7 +14,7 @@ tf_micro_model_results_t modelResults;
 tree_ensemble_model_results_t imu_modelResults;
 int sml_recognition_run (signed short *data_batch, int batch_sz, uint8_t num_sensors, uint32_t model_id)
 {
-  int ret;
+  int ret = -1;
 
   int batch_index = 0;
   signed short *data;

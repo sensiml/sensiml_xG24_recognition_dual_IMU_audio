@@ -10,6 +10,7 @@
 #include <stdint.h>
 
 void set_imu_classification(int8_t classification);
+void init_classifications ();
 void set_audio_classification(int8_t classification);
 int8_t get_imu_classification();
 int8_t get_audio_classification();

@@ -47,14 +47,13 @@ volatile bool config_received = true;
 void app_init(void)
 {
   app_iostream_usart_init();
-
   app_led_init();
-
   app_sensor_imu_init();
   app_sensor_imu_enable(true);
   init_classifications();
   kb_model_init();
   app_voice_init();
+
   // Start sampling
   app_voice_start();
 }
@@ -63,17 +62,11 @@ void app_init(void)
 
 void app_process_action(void)
 {
-
-
-
  app_sensor_imu_process_action();
  app_voice_process_action();
  combine_classifications(WINDOW_SIZE);
  app_led_process_action();
 
-
-  //combine_classifications();
-  app_led_process_action();
 }
 
 
