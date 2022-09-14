@@ -2,7 +2,7 @@ import json
 from sensiml import Client
 from sensiml.datamanager.knowledgepack import KnowledgePack
 
-client = Client(server="sensiml", insecure=True)
+client = Client()
 
 client.project = "Smart_Lock_Audio"
 
